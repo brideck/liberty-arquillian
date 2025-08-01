@@ -498,8 +498,8 @@ public class WLPManagedContainer implements DeployableContainer<WLPManagedContai
                  log.finer("Deploying using server.xml");
              }
             // Throw error if deployment type is not ear, war, or eba
-            if (!archiveType.equalsIgnoreCase("ear") && !archiveType.equalsIgnoreCase("war") && !archiveType.equalsIgnoreCase("eba"))
-               throw new DeploymentException("Invalid archive type: " + archiveType + ".  Valid archive types are ear, war, and eba.");
+            if (!archiveType.equalsIgnoreCase("ear") && !archiveType.equalsIgnoreCase("war") && !archiveType.equalsIgnoreCase("eba") && !archiveType.equalsIgnoreCase("ejb"))
+               throw new DeploymentException("Invalid archive type: " + archiveType + ".  Valid archive types are ear, war, eba, and ejb.");
 
             // Save the archive to disk so it can be loaded by the container.
             String appDir = getAppDirectory();
@@ -521,7 +521,7 @@ public class WLPManagedContainer implements DeployableContainer<WLPManagedContai
                  log.finer("Deploying using dropins");
              }
             // Save the archive to disk so it can be loaded by the container.
-            String dropInDir = getDropInDirectory();
+            String dropInDir = getDropInDirectory(archiveType);
             File exportedArchiveLocation = new File(dropInDir, archiveName);
             String tempDir = getDropInTempDirectory();
             File tempArchiveLocation = new File(tempDir, archiveName);
@@ -918,6 +918,7 @@ public class WLPManagedContainer implements DeployableContainer<WLPManagedContai
       }
 
       String archiveName = archive.getName();
+      String archiveType = createDeploymentType(archiveName);
       String deployName = createDeploymentName(archiveName);
       String deployDir = null; // will become either app or dropin dir
 
@@ -948,7 +949,7 @@ public class WLPManagedContainer implements DeployableContainer<WLPManagedContai
          if (containerConfiguration.isDeployTypeXML()) {
             deployDir = getAppDirectory();
          } else {
-            deployDir = getDropInDirectory();
+            deployDir = getDropInDirectory(archiveType);
          }
 
          // Remove the deployed archive
@@ -1007,9 +1008,13 @@ public class WLPManagedContainer implements DeployableContainer<WLPManagedContai
       }
    }
 
-   private String getDropInDirectory() throws IOException {
+   private String getDropInDirectory(String archiveType) throws IOException {
       String dropInDir = getServerConfigDir() +
             "/dropins";
+
+      if (archiveType.equals("ejb"))
+         dropInDir = dropInDir + "/ejb";
+
       if (log.isLoggable(Level.FINER))
          log.finer("dropInDir: " + dropInDir);
       new File(dropInDir).mkdirs();
@@ -1059,7 +1064,12 @@ public class WLPManagedContainer implements DeployableContainer<WLPManagedContai
 
    private String createDeploymentType(String archiveName)
    {
-      return archiveName.substring(archiveName.lastIndexOf(".")+1);
+      String depType = archiveName.substring(archiveName.lastIndexOf(".")+1);
+      if (depType.equals("jar")) {
+         depType = "ejb";
+      }
+
+      return depType;
    }
 
    private Document readServerXML() throws DeploymentException {
