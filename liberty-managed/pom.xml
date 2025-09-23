@@ -16,6 +16,7 @@
   <artifactId>arquillian-liberty-managed-jakarta</artifactId>
   <name>Arquillian Container Liberty Jakarta Managed</name>
   <description>Jakarta Liberty Managed Container integration for the Arquillian Project</description>
+  <url>https://github.com/OpenLiberty/liberty-arquillian</url>
 
   <properties>
     <skipTests>false</skipTests>
@@ -75,7 +76,7 @@
       <plugin>
         <groupId>io.openliberty.tools</groupId>
         <artifactId>liberty-maven-plugin</artifactId>
-        <version>3.7.1</version>
+        <version>3.11.5</version>
         <configuration>
           <skip>${skipTests}</skip>
           <serverName>defaultServer</serverName>
@@ -163,7 +164,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-dependency-plugin</artifactId>
-            <version>3.1.1</version>
+            <version>3.8.1</version>
             <executions>
               <execution>
                 <id>extract-support-feature</id>
@@ -387,7 +388,7 @@
         <dependency>
           <groupId>commons-io</groupId>
           <artifactId>commons-io</artifactId>
-          <version>2.14.0</version>
+          <version>2.20.0</version>
         </dependency>
 
         <!-- Jakarta EE Spec APIs -->
