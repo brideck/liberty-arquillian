@@ -26,6 +26,7 @@
       <!-- the values below are the documented default, so it is not changing anything,
            other than testing these code paths -->
       <property name="apiTypeVisibility">spec, ibm-api, api</property>
+      <property name="delegation">parentFirst</property>
 
       <!-- Adjust timeouts to work on Cloudbees CI server -->
       <property name="appDeployTimeout">60</property>

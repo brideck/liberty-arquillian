@@ -1,5 +1,5 @@
 /*
- * Copyright 2012, 2022 IBM Corporation, Red Hat Middleware LLC, and individual contributors
+ * Copyright 2012, 2025 IBM Corporation, Red Hat Middleware LLC, and individual contributors
  * identified by the Git commit log. 
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,6 +33,7 @@ public class WLPManagedContainerConfiguration implements
    private int appUndeployTimeout = 2;
    private String sharedLib = null;
    private String apiTypeVisibility = null;
+   private String delegation = null;
    private String deployType = "dropins";
    private String javaVmArguments = "";
    private boolean addLocalConnector;
@@ -98,11 +99,19 @@ public class WLPManagedContainerConfiguration implements
          }
       }
       
-      //Validate apiTypeVisibility
+      // Validate apiTypeVisibility
       if (apiTypeVisibility != null) {
          if (!apiTypeVisibility.isEmpty()) {
             if (!deployType.equalsIgnoreCase("xml"))
                throw new ConfigurationException("deployType must be set to xml when apiTypeVisibility is not empty");
+         }
+      }
+
+      // Validate delegation
+      if (delegation != null) {
+         if (!delegation.isEmpty()) {
+            if (!deployType.equalsIgnoreCase("xml"))
+               throw new ConfigurationException("deployType must be set to xml when delegation is not empty");
          }
       }
 
@@ -167,6 +176,13 @@ public class WLPManagedContainerConfiguration implements
       return apiTypeVisibility;
    }
 
+   public void setDelegation(String delegation) {
+      this.delegation = delegation;
+   }
+
+   public String getDelegation() {
+      return delegation;
+   }
    
    public void setDeployType(String deployType) {
       this.deployType = deployType;

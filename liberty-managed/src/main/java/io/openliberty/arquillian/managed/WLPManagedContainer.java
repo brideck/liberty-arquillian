@@ -1159,7 +1159,8 @@ public class WLPManagedContainer implements DeployableContainer<WLPManagedContai
 
       // create shared library
       if (containerConfiguration.getSharedLib() != null
-          ||containerConfiguration.getApiTypeVisibility() != null) {
+          || containerConfiguration.getApiTypeVisibility() != null
+          || containerConfiguration.getDelegation() != null) {
 
          Element classloader = doc.createElement("classloader");
 
@@ -1169,6 +1170,10 @@ public class WLPManagedContainer implements DeployableContainer<WLPManagedContai
 
          if (containerConfiguration.getApiTypeVisibility() != null) {
             classloader.setAttribute("apiTypeVisibility", containerConfiguration.getApiTypeVisibility());
+         }
+
+         if (containerConfiguration.getDelegation() != null) {
+            classloader.setAttribute("delegation", containerConfiguration.getDelegation());
          }
          application.appendChild(classloader);
       }
