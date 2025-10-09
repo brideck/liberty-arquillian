@@ -957,7 +957,7 @@ public class WLPManagedContainer implements DeployableContainer<WLPManagedContai
                 // Read client.xml file into Memory
                 Document clientDoc = readClientXML();
 
-                // Add the archive as appropriate to the client.xml file
+                // Remove the archive from the client.xml file
                 removeEnterpriseApplication(clientDoc, deployName);
 
                 // Update client.xml on file system
